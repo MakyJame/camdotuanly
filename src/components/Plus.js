@@ -215,4 +215,46 @@ function Plus() {
 
       {/* Hiển thị tổng số ngày, tháng và ngày lẻ */}
       {loanDate && loanDate.length === 10 && totalDays > 0 && !dateError && (
+        <div style={{ marginBottom: '20px' }}>
+          <h3>Thông Tin Cầm Đồ</h3>
+          <p>Tổng số ngày cầm cố: {totalDays} ngày</p>
+          <p>Tổng số tháng cầm cố: {totalMonths} tháng</p>
+          <p>Số ngày lẻ cầm cố: {leftoverDays} ngày</p>
+        </div>
+      )}
 
+      {/* Hiển thị bảng lãi suất */}
+      {interestResults.length > 0 && (
+        <div>
+          <h3>Số Tiền Lãi</h3>
+          <table border="1" cellPadding="10" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th>Loại Tài Sản</th>
+                <th>Lãi Suất Hàng Tháng (%)</th>
+                <th>Lãi Từ Tháng</th>
+                <th>Lãi Từ Ngày Lẻ (%)</th>
+                <th>Lãi Từ Ngày Lẻ</th>
+                <th>Tổng Lãi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {interestResults.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.assetType}</td>
+                  <td>{item.baseMonthlyRate}%</td>
+                  <td>{formatNumber(item.interestMonths.toFixed(0))} VND</td>
+                  <td>{item.leftoverDaysRate.toFixed(2)}%</td>
+                  <td>{formatNumber(item.interestDays.toFixed(0))} VND</td>
+                  <td>{formatNumber(item.totalInterest.toFixed(0))} VND</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Plus;
