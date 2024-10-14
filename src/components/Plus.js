@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import './Plus.css'
 function Plus() {
   const [assetType, setAssetType] = useState('Xe Máy'); // Thêm lựa chọn tài sản
   const [loan, setLoan] = useState('0');
@@ -215,7 +215,7 @@ function Plus() {
 
       {/* Hiển thị tổng số ngày, tháng và ngày lẻ */}
       {loanDate && loanDate.length === 10 && totalDays > 0 && !dateError && (
-        <div style={{ marginBottom: '20px' }}>
+        <div className="info" style={{ marginBottom: '20px' }}>
           <h3>Thông Tin Cầm Đồ</h3>
           <p>Tổng số ngày cầm cố: {totalDays} ngày</p>
           <p>Tổng số tháng cầm cố: {totalMonths} tháng</p>
@@ -225,7 +225,7 @@ function Plus() {
 
       {/* Hiển thị bảng lãi suất */}
       {interestResults.length > 0 && (
-        <div>
+        <div className="table-container">
           <h3>Số Tiền Lãi</h3>
           <table border="1" cellPadding="10" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
