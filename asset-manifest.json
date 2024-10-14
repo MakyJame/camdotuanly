@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/camdotuanly/static/css/main.f855e6bc.css",
-    "main.js": "/camdotuanly/static/js/main.ea4a1424.js",
+    "main.js": "/camdotuanly/static/js/main.943b1b7d.js",
     "static/js/453.ac79db8d.chunk.js": "/camdotuanly/static/js/453.ac79db8d.chunk.js",
     "index.html": "/camdotuanly/index.html",
     "main.f855e6bc.css.map": "/camdotuanly/static/css/main.f855e6bc.css.map",
-    "main.ea4a1424.js.map": "/camdotuanly/static/js/main.ea4a1424.js.map",
+    "main.943b1b7d.js.map": "/camdotuanly/static/js/main.943b1b7d.js.map",
     "453.ac79db8d.chunk.js.map": "/camdotuanly/static/js/453.ac79db8d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.ea4a1424.js"
+    "static/js/main.943b1b7d.js"
   ]
 }
