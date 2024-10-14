@@ -224,7 +224,7 @@ function Plus() {
                 <th>Lãi Tháng</th>
                 <th>Lãi Ngày</th>
                 <th>Tổng Lãi</th>
-                <th>Số Tiền Cần Thanh Toán</th>
+                <th>Số Tiền Cần Thanh Toán </th>
               </tr>
             </thead>
             <tbody>
