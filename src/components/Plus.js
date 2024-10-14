@@ -102,7 +102,7 @@ function Plus() {
 
     const endDate = new Date(); // Ngày hiện tại
     const timeDiff = endDate - startDate;
-    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
 
     if (daysDiff < 0) { // Ngày vay không được sau ngày hiện tại
       setTotalDays(0);
