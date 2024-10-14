@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './Plus.css'
+import './Plus.css';
+
 function Plus() {
-  const [assetType, setAssetType] = useState('Xe Máy'); // Thêm lựa chọn tài sản
+  const [assetType, setAssetType] = useState('Xe Máy');
   const [loan, setLoan] = useState('0');
   const [numericLoan, setNumericLoan] = useState(0);
   const [loanDate, setLoanDate] = useState('');
@@ -11,12 +12,11 @@ function Plus() {
   const [interestResults, setInterestResults] = useState([]);
   const [dateError, setDateError] = useState('');
 
-  // Hàm định dạng số với dấu phẩy
   const formatNumber = (num) => {
+    if (num === 0) return '0';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
-  // Hàm xử lý thay đổi số tiền vay
   const handleLoanChange = (e) => {
     const value = e.target.value;
     const numericValue = value.replace(/[^0-9]/g, '');
@@ -25,28 +25,24 @@ function Plus() {
     setLoan(formatNumber(parsedValue));
   };
 
-  // Hàm xử lý thay đổi tài sản cầm cố
   const handleAssetTypeChange = (e) => {
     setAssetType(e.target.value);
   };
 
-  // Hàm xử lý thay đổi ngày vay (dd/mm/yyyy)
   const handleDateChange = (e) => {
     const value = e.target.value;
     setLoanDate(value);
   };
 
-  // Hàm chuyển đổi từ dd/mm/yyyy sang Date object
   const parseDate = (dateStr) => {
     const parts = dateStr.split('/');
     if (parts.length !== 3) return null;
     const day = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1; // Tháng trong Date object bắt đầu từ 0
+    const month = parseInt(parts[1], 10) - 1;
     const year = parseInt(parts[2], 10);
     return new Date(year, month, day);
   };
 
-  // Hàm xác định lãi suất hàng tháng dựa trên loại tài sản và số tiền vay
   const getBaseMonthlyRate = (assetType, loanAmount) => {
     if (assetType === 'Xe Máy') {
       if (loanAmount < 3000000) return 9;
@@ -59,7 +55,6 @@ function Plus() {
     return 0;
   };
 
-  // Hàm xác định hệ số lãi từ ngày lẻ dựa trên số ngày lẻ
   const getLeftoverDaysMultiplier = (leftoverDays) => {
     if (leftoverDays >= 1 && leftoverDays <= 2) return 1;
     else if (leftoverDays >= 3 && leftoverDays <= 5) return 1.5;
@@ -72,7 +67,6 @@ function Plus() {
     else return 0;
   };
 
-  // Hàm tính tổng số ngày, tháng và số ngày lẻ
   const calculateTime = () => {
     if (!loanDate) {
       setTotalDays(0);
@@ -100,11 +94,11 @@ function Plus() {
       return;
     }
 
-    const endDate = new Date(); // Ngày hiện tại
+    const endDate = new Date();
     const timeDiff = endDate - startDate;
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
 
-    if (daysDiff < 0) { // Ngày vay không được sau ngày hiện tại
+    if (daysDiff < 0) {
       setTotalDays(0);
       setTotalMonths(0);
       setLeftoverDays(0);
@@ -121,7 +115,6 @@ function Plus() {
     setDateError('');
   };
 
-  // Hàm tính lãi dựa trên loại tài sản và số tiền vay
   const calculateInterest = () => {
     if (numericLoan === 0 || totalDays === 0) {
       setInterestResults([]);
@@ -136,22 +129,24 @@ function Plus() {
     const interestDays = numericLoan * (leftoverDaysRate / 100);
     const totalInterest = interestMonths + interestDays;
 
+    // Tính số tiền cần thanh toán
+    const totalPayment = numericLoan + totalInterest;
+
     setInterestResults([{
       assetType,
       baseMonthlyRate,
-      interestMonths,
-      leftoverDaysRate,
-      interestDays,
-      totalInterest
+      interestMonths: Math.round(interestMonths), // Làm tròn
+      leftoverDaysRate: Math.round(leftoverDaysRate), // Làm tròn
+      interestDays: Math.round(interestDays), // Làm tròn
+      totalInterest: Math.round(totalInterest), // Làm tròn
+      totalPayment: Math.round(totalPayment) // Làm tròn
     }]);
   };
 
-  // Sử dụng useEffect để tính toán khi thay đổi ngày vay
   useEffect(() => {
     calculateTime();
   }, [loanDate]);
 
-  // Sử dụng useEffect để tính toán khi thay đổi số tiền vay, tháng, hoặc ngày lẻ
   useEffect(() => {
     calculateInterest();
   }, [numericLoan, totalMonths, leftoverDays, assetType]);
@@ -160,7 +155,6 @@ function Plus() {
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       <h2>Tính Tiền Lãi Cầm Đồ</h2>
 
-      {/* Chọn loại tài sản cầm cố */}
       <div style={{ marginBottom: '20px' }}>
         <label>
           Loại tài sản cầm cố:
@@ -175,7 +169,6 @@ function Plus() {
         </label>
       </div>
 
-      {/* Nhập số tiền cầm đồ */}
       <div style={{ marginBottom: '20px' }}>
         <label>
           Số tiền cầm đồ:
@@ -190,7 +183,6 @@ function Plus() {
         </label>
       </div>
 
-      {/* Nhập ngày vay */}
       <div style={{ marginBottom: '20px' }}>
         <label>
           Ngày vay (dd/mm/yyyy):
@@ -206,14 +198,12 @@ function Plus() {
         </label>
       </div>
 
-      {/* Hiển thị thông báo lỗi về ngày */}
       {dateError && (
         <div style={{ color: 'red', marginBottom: '20px' }}>
           {dateError}
         </div>
       )}
 
-      {/* Hiển thị tổng số ngày, tháng và ngày lẻ */}
       {loanDate && loanDate.length === 10 && totalDays > 0 && !dateError && (
         <div className="info" style={{ marginBottom: '20px' }}>
           <h3>Thông Tin Cầm Đồ</h3>
@@ -223,30 +213,29 @@ function Plus() {
         </div>
       )}
 
-      {/* Hiển thị bảng lãi suất */}
       {interestResults.length > 0 && (
         <div className="table-container">
           <h3>Số Tiền Lãi</h3>
-          <table border="1" cellPadding="10" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
             <thead>
               <tr>
                 <th>Loại Tài Sản</th>
-                <th>Lãi Suất Hàng Tháng (%)</th>
-                <th>Lãi Từ Tháng</th>
-                <th>Lãi Từ Ngày Lẻ (%)</th>
-                <th>Lãi Từ Ngày Lẻ</th>
+                <th>Lãi Suất Cơ Bản (%)</th>
+                <th>Lãi Tháng</th>
+                <th>Lãi Ngày</th>
                 <th>Tổng Lãi</th>
+                <th>Số Tiền Cần Thanh Toán</th>
               </tr>
             </thead>
             <tbody>
-              {interestResults.map((item, index) => (
+              {interestResults.map((result, index) => (
                 <tr key={index}>
-                  <td>{item.assetType}</td>
-                  <td>{item.baseMonthlyRate}%</td>
-                  <td>{formatNumber(item.interestMonths.toFixed(0))} VND</td>
-                  <td>{item.leftoverDaysRate.toFixed(2)}%</td>
-                  <td>{formatNumber(item.interestDays.toFixed(0))} VND</td>
-                  <td>{formatNumber(item.totalInterest.toFixed(0))} VND</td>
+                  <td>{result.assetType}</td>
+                  <td>{result.baseMonthlyRate}</td>
+                  <td>{formatNumber(result.interestMonths)}</td>
+                  <td>{formatNumber(result.interestDays)}</td>
+                  <td>{formatNumber(result.totalInterest)}</td>
+                  <td>{formatNumber(result.totalPayment)}</td>
                 </tr>
               ))}
             </tbody>
